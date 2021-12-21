@@ -248,23 +248,23 @@ var hitStatement = function () {
 //Create a function that outputs the statement after the player stands
 var standStatement = function () {
   //Create a variable that mentions that the player stands
-  var hit = `Stand! Time to compare your hand with the dealer's and see who wins.`;
+  var stand = `Stand! Time to compare your hand with the dealer's and see who wins.`;
 
   //Set the game mode to game over
   gameOver();
 
   //Check if the dealer busted and output accordingly
   if (pointsCounting(computerCards) > 21) {
-    return `${hit}${cardsInHandStatement()}The dealer busted!<br>${winStatement()}${resetGame}`;
+    return `${stand}${cardsInHandStatement()}The dealer busted!<br>${winStatement()}${resetGame}`;
   }
 
   //If the dealer did not bust, compare the scores and output the correct statement
   if (pointsCounting(playerCards) > pointsCounting(computerCards)) {
-    return `${hit}${cardsInHandStatement()}${winStatement()}${resetGame}`;
+    return `${stand}${cardsInHandStatement()}${winStatement()}${resetGame}`;
   } else if (pointsCounting(playerCards) < pointsCounting(computerCards)) {
-    return `${hit}${cardsInHandStatement()}${lossStatement()}${resetGame}`;
+    return `${stand}${cardsInHandStatement()}${lossStatement()}${resetGame}`;
   } else if (pointsCounting(playerCards) == pointsCounting(computerCards)) {
-    return `${hit}${cardsInHandStatement()}${drawStatement()}${resetGame}`;
+    return `${stand}${cardsInHandStatement()}${drawStatement()}${resetGame}`;
   }
 };
 
@@ -314,12 +314,13 @@ var blackjackGame = function (userInput) {
           computerCards.push(deckOfCards.pop());
         }
       }
+      return standStatement();
     }
     //Once the computer hits 17 points, run the stand statement to compare
-    return standStatement();
-  } else {
-    //return invalid statement if the user input is not hit or stand
-    return `Invalid input!${cardsInHandStatement()}${hitOrStand}`;
+    else {
+      //return invalid statement if the user input is not hit or stand
+      return `Invalid input!${cardsInHandStatement()}${hitOrStand}`;
+    }
   }
 };
 
