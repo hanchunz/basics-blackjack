@@ -131,7 +131,21 @@ var cardsReadableFormatter = function (cards) {
   for (var counter = 0; counter < cards.length; counter += 1) {
     cardsReadableOutput =
       cardsReadableOutput +
-      `<br>${cards[counter].name} of ${cards[counter].suit}`;
+      `<br> - ${cards[counter].name} of ${cards[counter].suit}`;
+  }
+  return cardsReadableOutput;
+};
+
+//Create a function that outputs the cards in a readable format for the statements from the cards array
+var cardsReadableFormatterForDealer = function (cards) {
+  //Create a variable to store the output for the cards
+  var cardsReadableOutput = `<br> - Concealed`;
+
+  //Create a for loop that for each card in the cards array for each player, it adds the card name and suit to the output
+  for (var counter = 1; counter < cards.length; counter += 1) {
+    cardsReadableOutput =
+      cardsReadableOutput +
+      `<br> - ${cards[counter].name} of ${cards[counter].suit}`;
   }
   return cardsReadableOutput;
 };
@@ -185,17 +199,27 @@ var blackjackDrawStatement = function () {
 var hitOrStand = `Please input "hit" or "stand, then press submit.`;
 
 //Create a variable that prompts the user to reset the game
-var resetGame = `<br><br> Click submit to play again!`;
+var resetGame = `<br><br> Click the submit button to play again!`;
 
 //Create a function that outputs the hands of each player and their total score
 var cardsInHandStatement = function () {
-  return `<br><br>Your cards are: ${cardsReadableFormatter(
-    playerCards
-  )} <br>Your total score is ${pointsCounting(
-    playerCards
-  )}<br><br>The computer's cards are: ${cardsReadableFormatter(
-    computerCards
-  )} <br>Its total score is ${pointsCounting(computerCards)} <br><br>`;
+  if (gameMode == "game over") {
+    return `<br><br>Your cards are: ${cardsReadableFormatter(
+      playerCards
+    )} <br>Your total score is ${pointsCounting(
+      playerCards
+    )}<br><br>The computer's cards are: ${cardsReadableFormatter(
+      computerCards
+    )} <br>Its total score is ${pointsCounting(computerCards)} <br><br>`;
+  } else {
+    return `<br><br>Your cards are: ${cardsReadableFormatter(
+      playerCards
+    )} <br>Your total score is ${pointsCounting(
+      playerCards
+    )}<br><br>The computer's cards are: ${cardsReadableFormatterForDealer(
+      computerCards
+    )} <br><br>`;
+  }
 };
 
 //Create a function that outputs the statement after the cards have been dealt, determines if anyone has a black jeck, otherwise it will prompt the player to hit or stand
@@ -211,13 +235,11 @@ var cardsDealtStatement = function () {
     pointsCounting(playerCards) == 21 &&
     pointsCounting(computerCards) != 21
   ) {
-    gameOver();
     return `${cardsDealt}${cardsInHandStatement()}${blackjackWinStatement()}${resetGame}`;
   } else if (
     pointsCounting(playerCards) != 21 &&
     pointsCounting(computerCards) == 21
   ) {
-    gameOver();
     return `${cardsDealt}${cardsInHandStatement()}${blackjackLossStatement()}${resetGame}`;
   } else if (
     pointsCounting(playerCards) == 21 &&
